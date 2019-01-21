@@ -6,18 +6,6 @@ var totalPages;
 var song = document.createElement("audio");
 var file = "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/dc/8b/a8/dc8ba869-69c7-7d29-f108-b7540c938139/mzaf_811735733402692469.plus.aac.p.m4a";
 
-function searchiTunes() {
-    queryURL = "https://itunes.apple.com/search?term=original+motion+picture+soundtrack+" + term + "&limit=200";
-    console.log(queryURL);
-    $.ajax({
-        url: queryURL,
-        method: "GET",
-        dataType: 'JSON'
-    }).then(function(response) {
-        console.log(response);
-    });
-};
-
 function displayMovies(response) {
 
     var pDiv = $("<p>");
@@ -25,36 +13,65 @@ function displayMovies(response) {
     $("#display-area").append(pDiv);
     console.log(response.results.length);
     for (var i = 0; i < response.results.length; i++) {
-        console.log(i);
-        var movieDiv = $("<div class='movie'>");
+
         var imgURL = response.results[i].poster_path;
         if (imgURL) {
             imgURL = "https://image.tmdb.org/t/p/original/" + imgURL
+            var image = $("<img class='img-fluid' alt='Image Unavailable'>").attr("src", imgURL);
+            var movieDiv = $("<div class='movie'>");
+            movieDiv.attr("data-title", response.results[i].title);
+            movieDiv.append(image);
+            movieDiv.hide();
+            $("#display-area").append(movieDiv);
         };
-        console.log(imgURL);
-        var image = $("<img class='img-fluid' alt='Image Unavailable'>").attr("src", imgURL);
-        movieDiv.attr("data-title", response.results[i].title);
-        movieDiv.append(image);
-        movieDiv.hide();
-        $("#display-area").append(movieDiv);
-
     };
-    $(".movie").fadeIn("slow", function() {
+    $(".movie").fadeIn("slow", function () {
         // Animation complete
     });
 };
 
-function displaySoundtrack() {
-    term = $(this).attr("data-title").replace(/\W+/g, '+').toLowerCase();
-    queryURL = "https://itunes.apple.com/search?term=" + term + "&limit=200&media=music&entity=album";
+function getMovieSoundtrack() {
+    term = $(this).attr("data-title");
+    queryURL = "https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=16";
     console.log(queryURL);
     $.ajax({
         url: queryURL,
         method: "GET",
         dataType: 'JSON'
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
+        displayMovieSoundtrack(response)
     });
+};
+
+function displayMovieSoundtrack(response) {
+    var soundtracks = response.results;
+    var albums = { albumID: [], artwork: [] };
+    for (var i = 0; i < soundtracks.length; i++) {
+        if (soundtracks[i].collectionName.includes(term) && soundtracks[i].primaryGenreName === "Soundtrack" && soundtracks[i].trackCount > 1) {
+            albums.albumID.push(soundtracks[i].collectionId);
+            albums.artwork.push(soundtracks[i].artworkUrl100.replace("100x100", "600x600"));
+        }
+    }
+
+    if (albums.albumID.length > 0) {
+        var collectionIDS = albums.albumID[0].toString();
+        for (var i = 1; i < albums.albumID.length; i++) {
+            collectionIDS += "," + albums.albumID[i].toString();
+        };
+        console.log(collectionIDS);
+
+        queryURL = "https://itunes.apple.com/lookup?id=" + collectionIDS + "&entity=song";
+
+        $.ajax({
+            url: queryURL,
+            method: "GET",
+            dataType: 'JSON'
+        }).then(function (response) {
+            console.log(response);
+        });
+    };
+
 };
 
 function searchTMDB() {
@@ -64,7 +81,7 @@ function searchTMDB() {
         url: queryURL,
         method: "GET",
         dataType: 'JSON'
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         totalPages = response.total_pages;
         var totalResults = response.total_results;
@@ -77,11 +94,10 @@ function searchTMDB() {
     });
 };
 
-$("#searchButton").on("click", function(event) {
+$("#searchButton").on("click", function (event) {
     event.preventDefault();
     term = $("#searchTerm").val().trim();
     term = term.replace(/\W+/g, '+').toLowerCase();
-    console.log(term);
     $("#display-area").empty();
 
     switch ($("#searchBy").val()) {
@@ -93,7 +109,7 @@ $("#searchButton").on("click", function(event) {
 
 });
 
-$(document).on("click", ".movie", displaySoundtrack);
+$(document).on("click", ".movie", getMovieSoundtrack);
 
 // $("#play").on("click", function () {
 //     song.setAttribute("src", file);
