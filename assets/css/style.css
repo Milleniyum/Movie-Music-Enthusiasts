@@ -3,6 +3,10 @@ body {
     padding: 5px;
 }
 
+.movie-count, .soundtrack-count {
+    color: #4641af;
+}
+
 .movie {
     border: 1px solid black;
     width: 200px;
@@ -21,7 +25,7 @@ body {
 
 .jumbotron {
     text-align: center;
-    font-size: 60px;
+    font-size: 50px;
     font-weight: bold;
     background-color: #4641af;
     border: 4px solid white;
@@ -40,22 +44,25 @@ body {
     background-color: darkgray;
     border: 1px solid black;
     padding: 5px;
+    margin-bottom: 5px;
     height: 340px;
     overflow: auto;
     overflow-y: hidden;
     white-space: nowrap;
 }
 
-#movie-search-soundtrack {
+#movie-search-soundtracks {
     background-color: darkgray;
     border: 1px solid black;
     padding: 5px;
-    height: 250px;
+    margin-bottom: 10px;
+    height: 230px;
     overflow: auto;
     overflow-y: hidden;
     white-space: nowrap;
 }
 
-#search-area {
-    height: 100%;
+#movie-search-tracks, #movie-search-suggested {
+    height: 300px;
+    border: 1px solid black;
 }

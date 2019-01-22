@@ -22,19 +22,25 @@ function displayMovies(response) {
         };
     };
 
-    if ($("#movie-search-movies").children().length > 0) { $("#movie-search-wrapper").show(); };
+    var movieCount = $("#movie-search-movies").children().length;
+    if (movieCount > 0) {
+        $(".movie-count").text(" - " + movieCount + " movie(s) found");
+        $("#movie-search-wrapper").show();
+    } else {
+        $(".movie-count").text(" - 0 movies found");
+    };
 
-    $(".movie").fadeIn("slow", function() {
-        if (response.results.length > 1) {
-            $('#modal-title').text("Movies");
-            $('#modal-message').text("Multiple movies were found. Please select the movie you want.");
-            $('#modal-box').modal('show');
-        }
+    $(".movie").fadeIn("slow", function () {
+        //animation complete
     });
 };
 
 function getMovieSoundtrack() {
-    $("#movie-search-soundtrack").empty();
+    $(".soundtrack-count").text(" - Searching...");
+    $(".movie").attr("style", "border: 1px solid black;");
+    $(this).attr("style", "border: 4px solid yellow;");
+
+    $("#movie-search-soundtracks").empty();
     term = $(this).attr("data-title");
     queryURL = "https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=16";
     console.log(queryURL);
@@ -42,7 +48,7 @@ function getMovieSoundtrack() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         var soundtracks = response.results;
         var albumIDS = [];
@@ -53,14 +59,14 @@ function getMovieSoundtrack() {
         }
 
         if (albumIDS.length > 0) {
-            $("#movie-search-soundtrack").empty();
+            $("#movie-search-soundtracks").empty();
             queryURL = "https://itunes.apple.com/lookup?id=" + albumIDS.toString() + "&entity=song";
 
             $.ajax({
                 url: queryURL,
                 method: "GET",
                 dataType: "JSON"
-            }).then(function(response) {
+            }).then(function (response) {
                 console.log(response);
                 displayMovieSoundtrack(response)
             });
@@ -68,6 +74,7 @@ function getMovieSoundtrack() {
             $('#modal-title').text("Soundtrack(s)");
             $('#modal-message').text("No soundtracks were found for the selected movie.");
             $('#modal-box').modal('show');
+            $(".soundtrack-count").text(" - 0 soundtrack(s) found");
         };
     });
 };
@@ -82,20 +89,31 @@ function displayMovieSoundtrack(response) {
                 soundtrackDiv.attr("data-id", response.results.collectionId);
                 soundtrackDiv.append(image);
                 soundtrackDiv.hide();
-                $("#movie-search-soundtrack").append(soundtrackDiv);
+                $("#movie-search-soundtracks").append(soundtrackDiv);
             };
         }
     }
 
-    $(".movie-soundtrack").fadeIn("slow", function() {
-        if ($("#movie-search-soundtrack").children().length > 1) {
-            $('#modal-title').text("Soundtracks");
-            $('#modal-message').text("Multiple soundtracks were found. Please select which soundtrack you'd like suggested music.");
-            $('#modal-box').modal('show');
-        }
-    });
+    var soundTrackCount = $("#movie-search-soundtracks").children().length;
+    $(".soundtrack-count").text(" - " + soundTrackCount + " soundtrack(s) found");
 
+    $(".movie-soundtrack").fadeIn("slow", function () {
+        // animation complete
+    });
 };
+
+function displayAlbumTracks() {
+    $(".movie-soundtrack").attr("style", "border: 1px solid black;");
+    $(this).attr("style", "border: 4px solid yellow;");
+};
+
+function resetMovieSearch() {
+    $("#movie-search-wrapper").hide();
+    $("#movie-search-movies").empty();
+    $("#movie-search-soundtracks").empty();
+    $(".movie-count").text("");
+    $(".soundtrack-count").text("");
+}
 
 function searchTMDB() {
     var queryURL = "https://api.themoviedb.org/3/search/movie?api_key=cb56eb197668ef66bec1c2c9f31d14e0&query=" + term + "&adult=false&page=" + page;
@@ -104,7 +122,7 @@ function searchTMDB() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         totalPages = response.total_pages;
         var totalResults = response.total_results;
@@ -118,15 +136,14 @@ function searchTMDB() {
     });
 };
 
-$("#searchButton").on("click", function(event) {
+$("#searchButton").on("click", function (event) {
     event.preventDefault();
     term = $("#searchTerm").val().trim();
     term = term.replace(/\W+/g, '+').toLowerCase();
 
     switch ($("#searchBy").val()) {
         case "Movie":
-            $("#movie-search-movies").empty();
-            $("#movie-search-soundtrack").empty();
+            resetMovieSearch();
             page = 1; // start on page one of possible movie search results
             searchTMDB();
             break;
@@ -135,6 +152,7 @@ $("#searchButton").on("click", function(event) {
 });
 
 $(document).on("click", ".movie", getMovieSoundtrack);
+$(document).on("click", ".movie-soundtrack", displayAlbumTracks);
 
 // $("#play").on("click", function () {
 //     song.setAttribute("src", file);
