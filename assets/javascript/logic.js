@@ -5,6 +5,7 @@ var page = 1;
 var totalPages;
 var song = document.createElement("audio");
 var file = "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/dc/8b/a8/dc8ba869-69c7-7d29-f108-b7540c938139/mzaf_811735733402692469.plus.aac.p.m4a";
+var genres = { "Blues": 2, "Comedy": 3, "Children's Music": 4, "Classical": 5, "Country": 6, "Electronic": 7, "Holiday": 8, "Opera": 9, "Jazz": 11, "Latino": 12, "New Age": 13, "Pop": 14, "R&B/Soul": 15, "Soundtrack": 16, "Dance": 17, "Hip-Hop/Rap": 18, "World": 19, "Alternative": 20, "Rock": 21, "Christian & Gospel": 22, "Vocal": 23, "Raggae": 24, "Easy Listening": 25, "J-Pop": 27, "Anime": 29, "K-Pop": 51, "Instrumental": 53, "Brazillian": 1122, "Disney": 50000063 }
 
 function displayMovies(response) {
 
@@ -30,7 +31,7 @@ function displayMovies(response) {
         $(".movie-count").text(" - 0 movies found");
     };
 
-    $(".movie").fadeIn("slow", function () {
+    $(".movie").fadeIn("slow", function() {
         //animation complete
     });
 };
@@ -42,13 +43,13 @@ function getMovieSoundtrack() {
 
     $("#movie-search-soundtracks").empty();
     term = $(this).attr("data-title");
-    queryURL = "https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=16";
+    queryURL = "https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=" + genres.Soundtrack;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         var soundtracks = response.results;
         var albumIDS = [];
@@ -66,7 +67,7 @@ function getMovieSoundtrack() {
                 url: queryURL,
                 method: "GET",
                 dataType: "JSON"
-            }).then(function (response) {
+            }).then(function(response) {
                 console.log(response);
                 displayMovieSoundtrack(response)
             });
@@ -97,7 +98,7 @@ function displayMovieSoundtrack(response) {
     var soundTrackCount = $("#movie-search-soundtracks").children().length;
     $(".soundtrack-count").text(" - " + soundTrackCount + " soundtrack(s) found");
 
-    $(".movie-soundtrack").fadeIn("slow", function () {
+    $(".movie-soundtrack").fadeIn("slow", function() {
         // animation complete
     });
 };
@@ -122,7 +123,7 @@ function searchTMDB() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         totalPages = response.total_pages;
         var totalResults = response.total_results;
@@ -136,23 +137,33 @@ function searchTMDB() {
     });
 };
 
-$("#searchButton").on("click", function (event) {
+$("#search-button").on("click", function(event) {
     event.preventDefault();
-    term = $("#searchTerm").val().trim();
+    term = $("#search-term").val().trim();
     term = term.replace(/\W+/g, '+').toLowerCase();
 
-    switch ($("#searchBy").val()) {
+    switch ($("#search-by").val()) {
         case "Movie":
             resetMovieSearch();
             page = 1; // start on page one of possible movie search results
             searchTMDB();
             break;
+
     };
 
 });
 
 $(document).on("click", ".movie", getMovieSoundtrack);
 $(document).on("click", ".movie-soundtrack", displayAlbumTracks);
+$("#search-by").change(function() {
+    if ($("#search-by").val() === "Music Genre") {
+        $("#genre-group").show();
+        $("#search-term").prop("disabled", true);
+    } else {
+        $("#genre-group").hide();
+        $("#search-term").prop("disabled", false);
+    };
+});
 
 // $("#play").on("click", function () {
 //     song.setAttribute("src", file);
