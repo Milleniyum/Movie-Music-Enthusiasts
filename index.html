@@ -46,7 +46,12 @@
                 </form>
             </div>
             <div class="col-sm-10">
-                <div id="display-area"></div>
+                <div id="movie-search-wrapper">
+                    <h3>Movie Search Results</h3>
+                    <div id="movie-search-movies"></div>
+                    <h3>Related Soundtrack(s)</h3>
+                    <div id="movie-search-soundtrack"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -55,6 +60,26 @@
 
     <!-- <button id='play'>Play</button> -->
 
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-box" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+                </div>
+                <div class="modal-body" id="modal-message">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
