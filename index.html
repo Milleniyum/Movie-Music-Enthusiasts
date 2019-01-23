@@ -4,8 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>Movie Music Enthusiasts</title>
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
+    <!-- Local CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -71,21 +75,21 @@
                     <label for="search-term">Search Term:</label><br>
                     <input class="inputs rounded form-control" id="search-term" type="text"><br>
 
-                    <button type="submit" id="search-button" class="btn btn-primary">Search</button>
+                    <button type="submit" id="search-button" class="btn">Search</button>
 
                 </form>
             </div>
             <div class="col-sm-10">
                 <div id="movie-search-wrapper">
                     <h3>Movie Search Results<span class="movie-count"></span></h3>
-                    <div id="movie-search-movies"></div>
+                    <div class= "rounded" id="movie-search-movies"></div>
                     <h3>Related Soundtrack(s)<span class="soundtrack-count"></span></h3>
-                    <div id="movie-search-soundtracks"></div>
+                    <div class="rounded" id="movie-search-soundtracks"></div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="card-body" id="movie-search-tracks">
+                            <div class="card-body rounded" id="movie-search-tracks">
                                 <div class="card-header" id="soundtrack-header">Soundtrack</div>
-                                <table class="table table-striped table-responsive-sm">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th scope="col"></th>

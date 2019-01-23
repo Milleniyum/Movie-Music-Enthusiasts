@@ -1,11 +1,12 @@
 body {
     background-color: lightgray;
     padding: 5px;
+    font-family: 'Cabin', sans-serif;
 }
 
 .movie-count,
 .soundtrack-count {
-    color: #4641af;
+    color: #0e21af;
 }
 
 .movie {
@@ -47,22 +48,25 @@ body {
     margin-top: 3%;
 }
 
-
-
-
 #search-area {
     padding: 10px;
 }
 
+#search-button {
+    background-color: #0e21af;
+    color: white;
+}
+
 #movie-search-wrapper {
+    margin-top: 10px;
     display: none;
 }
 
 #movie-search-movies {
     background-color: darkgray;
-    border: 1px solid black;
+    border: 3px solid black;
     padding: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     height: 330px;
     overflow: auto;
     overflow-y: hidden;
@@ -71,7 +75,7 @@ body {
 
 #movie-search-soundtracks {
     background-color: darkgray;
-    border: 1px solid black;
+    border: 3px solid black;
     padding: 5px;
     margin-bottom: 10px;
     height: 230px;
@@ -82,10 +86,11 @@ body {
 
 #movie-search-tracks {
     background-color: white;
+    border: 3px solid black;
 }
 
 #soundtrack-header {
-    background-color:#4641af;
+    background-color:#0e21af;
     color: white;
     text-align: center;
     font-weight: bold;
@@ -102,4 +107,5 @@ th, td {
 
 .play-button {
     cursor: pointer;
+    width: 20px;
 }
