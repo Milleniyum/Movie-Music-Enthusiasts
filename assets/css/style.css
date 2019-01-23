@@ -3,16 +3,20 @@ body {
     padding: 5px;
 }
 
-.movie-count, .soundtrack-count {
+.movie-count,
+.soundtrack-count {
     color: #4641af;
 }
 
 .movie {
     border: 1px solid black;
     width: 200px;
+    height: 298px;
     display: inline-block;
     margin: 5px;
-    cursor: pointer
+    cursor: pointer;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .movie-soundtrack {
@@ -62,7 +66,8 @@ body {
     white-space: nowrap;
 }
 
-#movie-search-tracks, #movie-search-suggested {
+#movie-search-tracks,
+#movie-search-suggested {
     height: 300px;
     border: 1px solid black;
 }
