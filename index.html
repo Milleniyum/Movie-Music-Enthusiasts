@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>iTunes Test</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Movie Music Enthusiasts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -12,7 +13,10 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 jumbotron" id="header">Movie Music Enthusiasts</div>
+            <div class="col-sm-12 container" id="header">
+                <img class="img-fluid" id="header-logo" src="assets/images/logo.png">
+                <img class="img-fluid" id="header-logo-title" src="assets/images/logo_title.png">
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-2" id="search-area">
@@ -60,7 +64,7 @@
                             <option>Soundtrack</option>
                             <option>Vocal</option>
                             <option>World</option>
-                            
+
                         </select>
                     </div>
 
@@ -79,7 +83,21 @@
                     <div id="movie-search-soundtracks"></div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div id="movie-search-tracks"></div>
+                            <div class="card-body" id="movie-search-tracks">
+                                <div class="card-header" id="soundtrack-header">Soundtrack</div>
+                                <table class="table table-striped table-responsive-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Disc</th>
+                                            <th scope="col">Track</th>
+                                            <th scope="col">Song</th>
+                                            <th scope="col">Artist</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="soundtrack-table"></tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <div id="movie-search-suggested"></div>
@@ -88,12 +106,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-    <!-- <button id='play'>Play</button> -->
-
     </div>
 
     <!-- Modal -->
@@ -117,8 +129,10 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
     <script src="assets/javascript/logic.js"></script>
 </body>
 

@@ -27,14 +27,28 @@ body {
     cursor: pointer
 }
 
-.jumbotron {
+#header {
     text-align: center;
     font-size: 50px;
     font-weight: bold;
-    background-color: #4641af;
+    background-color: black;
     border: 4px solid white;
     color: white;
+    white-space: nowrap;
 }
+
+#header-logo {
+    width: 10%;
+    margin: 10px;
+}
+
+#header-logo-title {
+    width: 80%;
+    margin-top: 3%;
+}
+
+
+
 
 #search-area {
     padding: 10px;
@@ -49,7 +63,7 @@ body {
     border: 1px solid black;
     padding: 5px;
     margin-bottom: 5px;
-    height: 340px;
+    height: 330px;
     overflow: auto;
     overflow-y: hidden;
     white-space: nowrap;
@@ -66,8 +80,26 @@ body {
     white-space: nowrap;
 }
 
-#movie-search-tracks,
-#movie-search-suggested {
-    height: 300px;
-    border: 1px solid black;
+#movie-search-tracks {
+    background-color: white;
+}
+
+#soundtrack-header {
+    background-color:#4641af;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+#movie-search-tracks {
+    height: 400px;
+    overflow: auto;
+}
+
+th, td {
+    font-size: 14px;
+}
+
+.play-button {
+    cursor: pointer;
 }
