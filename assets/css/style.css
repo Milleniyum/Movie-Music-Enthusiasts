@@ -1,7 +1,18 @@
 body {
     background-color: lightgray;
-    padding: 5px;
+    margin: 10px;
+    margin-bottom: 60px;
     font-family: 'Cabin', sans-serif;
+}
+
+#welcome {
+    padding: 20px;
+    border: 3px solid #0e21af;
+    text-align: center;
+    font-size: 30px;
+    margin-top: 30px;
+    background-color: black;
+    color: white;
 }
 
 .movie-count,
@@ -39,13 +50,13 @@ body {
 }
 
 #header-logo {
-    width: 10%;
+    width: 8%;
     margin: 10px;
 }
 
 #header-logo-title {
-    width: 80%;
-    margin-top: 3%;
+    width: 70%;
+    margin-top: 2%;
 }
 
 #search-area {
@@ -64,7 +75,7 @@ body {
 
 #movie-search-movies {
     background-color: darkgray;
-    border: 3px solid black;
+    border: 3px solid #0e21af;
     padding: 5px;
     margin-bottom: 10px;
     height: 330px;
@@ -75,7 +86,7 @@ body {
 
 #movie-search-soundtracks {
     background-color: darkgray;
-    border: 3px solid black;
+    border: 3px solid #0e21af;
     padding: 5px;
     margin-bottom: 10px;
     height: 230px;
@@ -94,10 +105,11 @@ body {
 
 #movie-search-tracks,
 #movie-search-suggested {
-    height: 400px;
+    height: 500px;
     overflow: auto;
     background-color: white;
-    border: 3px solid black;
+    border: 3px solid #0e21af;
+    margin-bottom: 10px;
 }
 
 th,
@@ -108,4 +120,22 @@ td {
 .play-button {
     cursor: pointer;
     width: 20px;
+}
+
+footer {
+    border-top: 8px solid #0e21af;
+    background: black;
+    text-align: center;
+    line-height: 52px;
+    height: 60px;
+    color: #ffffff;
+}
+
+footer img {
+    height: 20%;
+}
+
+#youtube-player {
+    width: 100%;
+    height: 350;
 }
