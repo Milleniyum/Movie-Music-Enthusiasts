@@ -84,24 +84,24 @@ body {
     white-space: nowrap;
 }
 
-#movie-search-tracks {
-    background-color: white;
-    border: 3px solid black;
-}
-
-#soundtrack-header {
-    background-color:#0e21af;
+#soundtrack-header,
+#suggested-header {
+    background-color: #0e21af;
     color: white;
     text-align: center;
     font-weight: bold;
 }
 
-#movie-search-tracks {
+#movie-search-tracks,
+#movie-search-suggested {
     height: 400px;
     overflow: auto;
+    background-color: white;
+    border: 3px solid black;
 }
 
-th, td {
+th,
+td {
     font-size: 14px;
 }
 

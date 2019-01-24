@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <title>Movie Music Enthusiasts</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
     <!-- Local CSS -->
@@ -82,7 +81,7 @@
             <div class="col-sm-10">
                 <div id="movie-search-wrapper">
                     <h3>Movie Search Results<span class="movie-count"></span></h3>
-                    <div class= "rounded" id="movie-search-movies"></div>
+                    <div class="rounded" id="movie-search-movies"></div>
                     <h3>Related Soundtrack(s)<span class="soundtrack-count"></span></h3>
                     <div class="rounded" id="movie-search-soundtracks"></div>
                     <div class="row">
@@ -104,7 +103,21 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div id="movie-search-suggested"></div>
+                            <div class="card-body rounded" id="movie-search-suggested">
+                                <div class="card-header" id="suggested-header">Suggested</div>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Disc</th>
+                                            <th scope="col">Track</th>
+                                            <th scope="col">Song</th>
+                                            <th scope="col">Artist</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="suggested-table"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -133,10 +146,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="assets/javascript/logic.js"></script>
 </body>
 

@@ -34,7 +34,7 @@ function displayMovies(response) {
         $('#modal-box').modal('show');
     };
 
-    $(".movie").fadeIn("slow", function () {
+    $(".movie").fadeIn("slow", function() {
         //animation complete
     });
 };
@@ -59,7 +59,7 @@ function getMovieSoundtrack() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         var soundtracks = response.results;
         var albumIDS = [];
@@ -77,7 +77,7 @@ function getMovieSoundtrack() {
                 url: queryURL,
                 method: "GET",
                 dataType: "JSON"
-            }).then(function (response) {
+            }).then(function(response) {
                 console.log(response);
                 displayMovieSoundtrack(response)
             });
@@ -105,7 +105,7 @@ function displayMovieSoundtrack(response) {
     var soundTrackCount = $("#movie-search-soundtracks").children().length;
     $(".soundtrack-count").text(" - " + soundTrackCount + " soundtrack(s) found");
 
-    $(".movie-soundtrack").fadeIn("slow", function () {
+    $(".movie-soundtrack").fadeIn("slow", function() {
         // animation complete
     });
 
@@ -117,6 +117,7 @@ function displaySoundtrackSongs() {
     $(this).attr("style", "border: 4px solid yellow;");
 
     $("#soundtrack-table").empty();
+    var soundtrackDetails = { artistID: [] }
     for (var i = 0; i < soundtrackSongs.length; i++) {
         if (soundtrackSongs[i].wrapperType === "track" && soundtrackSongs[i].collectionId.toString() === $(this).attr("data-id")) {
             $("#soundtrack-header").text(soundtrackSongs[i].collectionName);
@@ -127,6 +128,12 @@ function displaySoundtrackSongs() {
             newTR.append('<td>' + soundtrackSongs[i].trackName + '</td>');
             newTR.append('<td><a href=' + soundtrackSongs[i].artistViewUrl + ' target="_blank">' + soundtrackSongs[i].artistName + '</a></td>');
             $('#soundtrack-table').append(newTR);
+
+            var id = soundtrackSongs[i].artistID;
+            if (soundtrackDetails.artistID.indexOf(id) === -1) {
+                soundtrackDetails.artistID.push(id);
+            }
+
         }
     }
 };
@@ -148,7 +155,7 @@ function searchTMDB() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         totalPages = response.total_pages;
         var totalResults = response.total_results;
@@ -162,7 +169,7 @@ function searchTMDB() {
     });
 };
 
-$("#search-by").change(function () {
+$("#search-by").change(function() {
     if ($("#search-by").val() === "Music Genre") {
         $("#genre-group").show();
         $("#search-term").prop("disabled", true);
@@ -172,7 +179,7 @@ $("#search-by").change(function () {
     };
 });
 
-$("#search-button").on("click", function (event) {
+$("#search-button").on("click", function(event) {
     event.preventDefault();
     term = $("#search-term").val().trim();
     term = term.replace(/\W+/g, '+').toLowerCase();
@@ -192,7 +199,7 @@ $(document).on("click", ".movie", getMovieSoundtrack);
 // Display the songs for the selected soundtrack
 $(document).on("click", ".movie-soundtrack", displaySoundtrackSongs);
 
-$(document).on("click", ".play-button", function () {
+$(document).on("click", ".play-button", function() {
     var previewURL = $(this).attr("data-preview");
     if ($(this).attr("src") === "assets/images/play.png") {
         // Pause any current audio and set images back to play
@@ -211,6 +218,6 @@ $(document).on("click", ".play-button", function () {
     };
 });
 
-songPreview.onended = function () {
+songPreview.onended = function() {
     $(".play-button").attr("src", "assets/images/play.png");
 };
