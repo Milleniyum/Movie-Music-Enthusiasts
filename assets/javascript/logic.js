@@ -7,13 +7,13 @@ var config = {
 firebase.initializeApp(config);
 var dbRef = firebase.database().ref("\links");
 
-// var movieLinks = {site: ["The Movie Database", "IMDB", "Rotten Tomatoes", "Fandango"], url: ["https://www.themoviedb.org/", "https://www.imdb.com/", "https://www.rottentomatoes.com/", "https://www.fandango.com/"]};
-// var musicLinks = {site: ["Apple Music", "Spotify", "Pandora", "Soundcloud"], url: ["https://apple.com/itunes", "https://www.spotify.com", "https://www.pandora.com", "https://www.soundcloud.com/"]};
+var movieLinks = { site: ["The Movie Database", "IMDB", "Rotten Tomatoes", "Fandango", "Screen Rant"], url: ["https://www.themoviedb.org/", "https://www.imdb.com/", "https://www.rottentomatoes.com/", "https://www.fandango.com/"] };
+var musicLinks = { site: ["Apple Music", "Spotify", "Pandora", "Soundcloud"], url: ["https://apple.com/itunes", "https://www.spotify.com", "https://www.pandora.com", "https://www.soundcloud.com/", "https://screenrant.com/"] };
 
-// dbRef.set({
-//     movies: JSON.stringify(movieLinks),
-//     music: JSON.stringify(musicLinks)
-// });
+dbRef.set({
+    movies: JSON.stringify(movieLinks),
+    music: JSON.stringify(musicLinks)
+});
 
 var term;
 var genre;
@@ -24,7 +24,7 @@ var songPreview = document.createElement("audio");
 var soundtrackSongs = {};
 var genres = { "Blues": 2, "Comedy": 3, "Children's Music": 4, "Classical": 5, "Country": 6, "Electronic": 7, "Holiday": 8, "Opera": 9, "Jazz": 11, "Latino": 12, "New Age": 13, "Pop": 14, "R&B/Soul": 15, "Soundtrack": 16, "Dance": 17, "Hip-Hop/Rap": 18, "World": 19, "Alternative": 20, "Rock": 21, "Christian & Gospel": 22, "Vocal": 23, "Raggae": 24, "Easy Listening": 25, "J-Pop": 27, "Anime": 29, "K-Pop": 51, "Instrumental": 53, "Brazillian": 1122, "Disney": 50000063 }
 
-dbRef.on("value", function (snapshot) {
+dbRef.on("value", function(snapshot) {
     if (snapshot.val()) {
         movieLinks = JSON.parse(snapshot.val().movies);
         musicLinks = JSON.parse(snapshot.val().music);
@@ -70,8 +70,16 @@ function displayMovies(response) {
         $('#modal-box').modal('show');
     };
 
-    $(".movie").fadeIn("slow", function () {
+    $(".movie").fadeIn("slow", function() {
         //animation complete
+    });
+
+    anime({
+        targets: document.getElementsByClassName("movie"),
+        scale: [
+            { value: .6, easing: 'easeOutSine', duration: 500 },
+            { value: 1, easing: 'easeOutQuad', duration: 1000 },
+        ],
     });
 };
 
@@ -91,13 +99,13 @@ function getMovieSoundtrack() {
     $("#suggested-table").empty();
 
     term = $(this).attr("data-title");
-    queryURL = "https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=" + genres.Soundtrack;
+    queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=" + genres.Soundtrack;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         var soundtracks = response.results;
         var albumIDS = [];
@@ -109,13 +117,13 @@ function getMovieSoundtrack() {
 
         if (albumIDS.length > 0) {
             $("#movie-search-soundtracks").empty();
-            queryURL = "https://itunes.apple.com/lookup?id=" + albumIDS.toString() + "&entity=song";
+            queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/lookup?id=" + albumIDS.toString() + "&entity=song";
 
             $.ajax({
                 url: queryURL,
                 method: "GET",
                 dataType: "JSON"
-            }).then(function (response) {
+            }).then(function(response) {
                 console.log(response);
                 displayMovieSoundtrack(response)
             });
@@ -143,7 +151,7 @@ function displayMovieSoundtrack(response) {
     var soundTrackCount = $("#movie-search-soundtracks").children().length;
     $(".soundtrack-count").text(" - " + soundTrackCount + " soundtrack(s) found");
 
-    $(".movie-soundtrack").fadeIn("slow", function () {
+    $(".movie-soundtrack").fadeIn("slow", function() {
         // animation complete
     });
 
@@ -186,18 +194,29 @@ function displaySoundtrackSongs() {
             details.explicit = soundtrackSongs[i].collectionExplicitness;
         };
     };
+
     console.log(details);
+    anime({
+        targets: this,
+        rotate: {
+            value: '+=2turn', // 0 + 2 = '2turn'
+            duration: 500,
+            easing: 'easeInOutSine'
+        },
+        direction: 'reverse'
+    });
+
     getSongSuggestions(details);
 };
 
 function getSongSuggestions(details) {
-    queryURL = "https://itunes.apple.com/lookup?id=" + details.artistID.toString() + "&media=music&entity=song&country=us";
+    queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/lookup?id=" + details.artistID.toString() + "&media=music&entity=song&country=us";
     console.log(queryURL);
     $.ajax({
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         displaySongSuggestions(response, details);
     });
@@ -240,7 +259,7 @@ function searchTMDB() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function (response) {
+    }).then(function(response) {
         console.log(response);
         totalPages = response.total_pages;
         var totalResults = response.total_results;
@@ -265,11 +284,12 @@ function loadYTPlayer() {
 };
 //This function creates an <iframe> (and YouTube player) after the API code downloads.
 var ytPlayer;
+
 function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('youtube-player', {
         height: '390',
         width: '640',
-        videoId: 'fwbioV8cPkI',
+        videoId: 'YzEL7Vga5AM',
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -287,17 +307,19 @@ function onPlayerReady(event) {
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
 var done = false;
+
 function onPlayerStateChange(event) {
     // if (event.data == YT.PlayerState.PLAYING && !done) {
     //     setTimeout(stopVideo, 6000);
     //     done = true;
     // }
 }
+
 function stopVideo() {
     player.stopVideo();
 }
 
-$("#search-by").change(function () {
+$("#search-by").change(function() {
     if ($("#search-by").val() === "Music Genre") {
         $("#genre-group").show();
         $("#search-term").prop("disabled", true);
@@ -307,7 +329,7 @@ $("#search-by").change(function () {
     };
 });
 
-$("#search-button").on("click", function (event) {
+$("#search-button").on("click", function(event) {
     event.preventDefault();
     term = $("#search-term").val().trim();
 
@@ -321,6 +343,8 @@ $("#search-button").on("click", function (event) {
             page = 1; // start on page one of possible movie search results
             searchTMDB();
             break;
+        case "Music Artist":
+
     };
 });
 
@@ -330,7 +354,7 @@ $(document).on("click", ".movie", getMovieSoundtrack);
 // Display the songs for the selected soundtrack
 $(document).on("click", ".movie-soundtrack", displaySoundtrackSongs);
 
-$(document).on("click", ".play-button", function () {
+$(document).on("click", ".play-button", function() {
     var previewURL = $(this).attr("data-preview");
     if ($(this).attr("src") === "assets/images/play.png") {
         // Pause any current audio and set images back to play
@@ -349,8 +373,8 @@ $(document).on("click", ".play-button", function () {
     };
 });
 
-songPreview.onended = function () {
+songPreview.onended = function() {
     $(".play-button").attr("src", "assets/images/play.png");
 };
 
-// loadYTPlayer();
+loadYTPlayer();
