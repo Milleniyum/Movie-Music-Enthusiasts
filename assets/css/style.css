@@ -108,11 +108,11 @@ body {
 }
 
 #youtube-logo {
-    position: absolute;
-    top: 36px;
-    left: 45px;
-    width: 100px;
+    width: 120px;
+    margin-left: 10px;
+    padding-bottom: 5px;
     cursor: pointer;
+    /* display: none; */
 }
 
 #soundtrack-tracks,

@@ -63,8 +63,8 @@ function onYouTubeIframeAPIReady() {
 
 function getYouTube() {
 
-    var term = $(this).attr("data-title");
-    var queryURL = "https://cors-anywhere.herokuapp.com/https://www.googleapis.com/youtube/v3/search?part=snippet&q="+term+"&type=playlist&key=AIzaSyCjoCACPpUx6wDvUQVPfuBxwAWDlMwtkyE"
+    var term = $(this).attr("data-title").replace(/\W+/g, '+').toLowerCase();
+    var queryURL = "https://cors-anywhere.herokuapp.com/https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + term + "&type=playlist&key=AIzaSyCjoCACPpUx6wDvUQVPfuBxwAWDlMwtkyE"
 
     $.ajax({
         url: queryURL,
@@ -74,6 +74,7 @@ function getYouTube() {
         console.log(response);
         if (response.items.length > 0) {
             displayYouTube(response.items[0].id.playlistId);
+            $("#youtube-modal-title").text(response.items[0].snippet.title);
         } else {
             $('#modal-title').text("YouTube Soundtrack");
             $('#modal-message').text("No soundtrack playlist found on YouTube.");
@@ -91,7 +92,7 @@ function displayYouTube(playListID) {
         suggestedQuality: "default"
     });
     $('#modal-youtube').modal('show');
-    event.target.playVideo();
+    ytPlayer.playVideo();
 }
 
 
@@ -151,6 +152,7 @@ function getMovieSoundtrack() {
     $("#soundtrack-header").text("Soundtrack");
     $("#soundtrack-header").attr("data-id", "");
     $("#suggested-table").empty();
+    $("#youtube-logo").hide();
 
     term = $(this).attr("data-title");
     queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/search?term=" + term.replace(/\W+/g, '+').toLowerCase() + "&limit=200&media=music&entity=album&country=us&genreId=" + genres.Soundtrack;
@@ -239,6 +241,7 @@ function displaySoundtrackSongs() {
         if (soundtrackSongs[i].wrapperType === "track" && soundtrackSongs[i].collectionId.toString() === $(this).attr("data-id")) {
             $("#soundtrack-header").text(soundtrackSongs[i].collectionName);
             $("#youtube-logo").attr("data-title", soundtrackSongs[i].collectionName);
+            $("#youtube-logo").show();
             $("#soundtrack-header").attr("data-id", $(this).attr("data-id"));
             var newTR = $('<tr>');
             newTR.append('<td><img class="play-button" src="assets/images/play.png" data-preview=' + soundtrackSongs[i].previewUrl + '></td>');
@@ -328,8 +331,8 @@ function getSuggestedMovies(artistResponse, artistGenre) {
 
         //Combine response and artistResponse if searching by music artist
         if ($("#search-by").val() === "Music Artist") {
-            for (var i = 0; i < artistResponse.results.length; i++) {
-                response.results.push(artistResponse.results[i]);
+            for (var i = artistResponse.results.length - 1; i > -1; i--) {
+                response.results.unshift(artistResponse.results[i]);
             };
             console.log(response);
         };
@@ -534,6 +537,7 @@ function resetSearch() {
     $("#soundtrack-header").attr("data-id", "");
     $("#soundtrack-table").empty();
     $("#suggested-table").empty();
+    $("#youtube-logo").hide();
 };
 
 function searchTMDB() {
@@ -611,6 +615,7 @@ $(document).on("click", ".artist-album", function () {
 
     $("#movie-results").empty();
     $(".movie-count").text(" - Searching...");
+    $("#youtube-logo").hide();
 
     var artistID = $(this).attr("data-id");
     var artistName = $(this).attr("data-name").replace(/\W+/g, '+').toLowerCase();

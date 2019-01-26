@@ -114,12 +114,12 @@
                     </div>
                     <h3>Movie Search Results<span class="movie-count"></span></h3>
                     <div class="rounded" id="movie-results"></div>
-                    <h3>Related Soundtrack(s)<span class="soundtrack-count"></span></h3>
+                    <h3>Related Soundtrack(s)<span class="soundtrack-count"></span><img id="youtube-logo" src="assets/images/youtube_logo.png" alt="YouTube Logo"></h3>
                     <div class="rounded" id="soundtrack-results"></div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card-body rounded" id="soundtrack-tracks">
-                                <img id="youtube-logo" src="assets/images/youtube_logo.png" alt="YouTube Logo">
+                                
                                 <div class="card-header" id="soundtrack-header">Soundtrack</div>
                                 <table class="table table-striped">
                                     <thead>
@@ -180,8 +180,9 @@
     <div class="modal fade" id="modal-youtube" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title" id="youtube-modal-title">Modal title</h5></div>
                 <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
                     <div>
                         <div id="youtube-player"></div>
                     </div>
