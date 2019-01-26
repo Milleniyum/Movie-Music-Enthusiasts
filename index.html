@@ -31,7 +31,6 @@
                             <option selected>Movie</option>
                             <option>Music Artist</option>
                             <option>Music Genre</option>
-                            <option>Music Song Title</option>
                         </select>
                     </div>
 
@@ -62,7 +61,7 @@
                             <option>Opera</option>
                             <option>Pop</option>
                             <option>R&B</option>
-                            <option>Raggae</option>
+                            <option>Reggae</option>
                             <option>Rock</option>
                             <option>Soundtrack</option>
                             <option>Vocal</option>
@@ -101,14 +100,18 @@
                     <h1>Happy Discovering!</h1>
                 </div>
 
-                <div id="movie-search-wrapper">
+                <div id="search-wrapper">
+                    <div id="artist-results-wrapper">
+                        <h3>Artist Search Results<span class="artist-count"></span></h3>
+                        <div class="rounded" id="artist-results"></div>
+                    </div>
                     <h3>Movie Search Results<span class="movie-count"></span></h3>
-                    <div class="rounded" id="movie-search-movies"></div>
+                    <div class="rounded" id="movie-results"></div>
                     <h3>Related Soundtrack(s)<span class="soundtrack-count"></span></h3>
-                    <div class="rounded" id="movie-search-soundtracks"></div>
+                    <div class="rounded" id="soundtrack-results"></div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="card-body rounded" id="movie-search-tracks">
+                            <div class="card-body rounded" id="soundtrack-tracks">
                                 <div class="card-header" id="soundtrack-header">Soundtrack</div>
                                 <table class="table table-striped">
                                     <thead>
@@ -125,7 +128,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
-                            <div class="card-body rounded" id="movie-search-suggested">
+                            <div class="card-body rounded" id="suggested-tracks">
                                 <div class="card-header" id="suggested-header">Suggested Music</div>
                                 <table class="table table-striped">
                                     <thead>
@@ -180,7 +183,9 @@
 
     <footer class="fixed-bottom">
         <div class="row">
-            <div class="col-4"><img src="assets/images/tmdb_logo.png" alt="TMDB Logo"></div>
+            <div class="col-4">
+                <a href="https://www.themoviedb.org/" target="_blank"><img src="assets/images/tmdb_logo.png" alt="TMDB Logo"></a>
+            </div>
             <div class="col-4">Copyright &copy 2019</div>
             <div class="col-4">
                 <a href="https://apple.com/itunes" target="_blank"><img src="assets/images/itunes_logo.png" alt="iTunes Logo"></a>

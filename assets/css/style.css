@@ -31,7 +31,8 @@ body {
     overflow-y: hidden;
 }
 
-.movie-soundtrack {
+.movie-soundtrack,
+.artist-album {
     border: 1px solid black;
     width: 200px;
     display: inline-block;
@@ -47,6 +48,7 @@ body {
     border: 4px solid white;
     color: white;
     white-space: nowrap;
+    margin-bottom: 10px;
 }
 
 #header-logo {
@@ -68,12 +70,12 @@ body {
     color: white;
 }
 
-#movie-search-wrapper {
+#search-wrapper {
     margin-top: 10px;
     display: none;
 }
 
-#movie-search-movies {
+#movie-results {
     background-color: darkgray;
     border: 3px solid #0e21af;
     padding: 5px;
@@ -84,7 +86,8 @@ body {
     white-space: nowrap;
 }
 
-#movie-search-soundtracks {
+#soundtrack-results,
+#artist-results {
     background-color: darkgray;
     border: 3px solid #0e21af;
     padding: 5px;
@@ -103,8 +106,8 @@ body {
     font-weight: bold;
 }
 
-#movie-search-tracks,
-#movie-search-suggested {
+#soundtrack-tracks,
+#suggested-tracks {
     height: 500px;
     overflow: auto;
     background-color: white;
