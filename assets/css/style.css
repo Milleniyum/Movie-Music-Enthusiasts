@@ -112,7 +112,7 @@ body {
     margin-left: 10px;
     padding-bottom: 5px;
     cursor: pointer;
-    /* display: none; */
+    display: none;
 }
 
 #soundtrack-tracks,
