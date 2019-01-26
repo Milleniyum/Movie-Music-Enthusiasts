@@ -5,14 +5,15 @@
     <meta charset="utf-8">
     <title>Movie Music Enthusiasts</title>
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
     <!-- Local CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body style="padding: 10px;">
+<body>
 
     <div class="container-fluid">
         <div class="row">
@@ -22,7 +23,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-2" id="search-area">
+            <div class="col-md-2" id="search-area">
                 <form id="searchForm">
 
                     <div class="form-group">
@@ -91,11 +92,17 @@
 
             </div>
 
-            <div class="col-sm-10">
+            <div class="col-md-10">
                 <div id="welcome" class="rounded">
-                    <h1>Welcome to Movie Music Enthusiasts!</h1> <br> This site is designed for movie and music lovers a-like, but more-so for those who love the music in movies. <br> Music has the ability to elevate a scene. In one moment it has your heart
-                    pounding as the beat amplifies the explosions of an action sequence, and in another it's sweet melody breaks you down into a sobbing mess. <br> No matter what your reason for visiting, we hope you leave having discovered more music
-                    and movies to enjoy. <br> To get started, choose the movie category to receive music suggestions based on the music in the movies you love, or a music category to receive suggestions on movies you may enjoy for their music content.
+                    <h1>Welcome to Movie Music Enthusiasts!</h1> <br> This site is designed for movie and music lovers
+                    a-like, but more-so for those who love the music in movies. <br> Music has the ability to elevate a
+                    scene. In one moment it has your heart
+                    pounding as the beat amplifies the explosions of an action sequence, and in another it's sweet
+                    melody breaks you down into a sobbing mess. <br> No matter what your reason for visiting, we hope
+                    you leave having discovered more music
+                    and movies to enjoy. <br> To get started, choose the movie category to receive music suggestions
+                    based on the music in the movies you love, or a music category to receive suggestions on movies you
+                    may enjoy for their music content.
                     <br><br>
                     <h1>Happy Discovering!</h1>
                 </div>
@@ -110,8 +117,9 @@
                     <h3>Related Soundtrack(s)<span class="soundtrack-count"></span></h3>
                     <div class="rounded" id="soundtrack-results"></div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <div class="card-body rounded" id="soundtrack-tracks">
+                                <img id="youtube-logo" src="assets/images/youtube_logo.png" alt="YouTube Logo">
                                 <div class="card-header" id="soundtrack-header">Soundtrack</div>
                                 <table class="table table-striped">
                                     <thead>
@@ -121,13 +129,14 @@
                                             <th scope="col">Track</th>
                                             <th scope="col">Song</th>
                                             <th scope="col">Artist</th>
+                                            <th scope="col">Genre</th>
                                         </tr>
                                     </thead>
                                     <tbody id="soundtrack-table"></tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6">
                             <div class="card-body rounded" id="suggested-tracks">
                                 <div class="card-header" id="suggested-header">Suggested Music</div>
                                 <table class="table table-striped">
@@ -172,7 +181,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div>
                         <div id="youtube-player"></div>
                     </div>
@@ -193,11 +202,12 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
     <!-- Animate JS -->
-    <script src=https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.js></script>
-    <!-- Firebase -->
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/animejs/2.2.0/anime.js> </script> <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-database.js"></script>
     <script src="assets/javascript/logic.js"></script>

@@ -16,7 +16,8 @@ body {
 }
 
 .movie-count,
-.soundtrack-count {
+.soundtrack-count,
+.artist-count {
     color: #0e21af;
 }
 
@@ -104,6 +105,14 @@ body {
     color: white;
     text-align: center;
     font-weight: bold;
+}
+
+#youtube-logo {
+    position: absolute;
+    top: 36px;
+    left: 45px;
+    width: 100px;
+    cursor: pointer;
 }
 
 #soundtrack-tracks,

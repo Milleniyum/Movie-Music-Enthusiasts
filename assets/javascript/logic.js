@@ -25,7 +25,7 @@ var songPreview = document.createElement("audio");
 var soundtrackSongs = {};
 var genres = { "Blues": 2, "Comedy": 3, "Children's Music": 4, "Classical": 5, "Country": 6, "Electronic": 7, "Holiday": 8, "Opera": 9, "Jazz": 11, "Latino": 12, "New Age": 13, "Pop": 14, "R&B/Soul": 15, "Soundtrack": 16, "Dance": 17, "Hip-Hop/Rap": 18, "World": 19, "Alternative": 20, "Rock": 21, "Christian & Gospel": 22, "Vocal": 23, "Reggae": 24, "Easy Listening": 25, "J-Pop": 27, "Anime": 29, "K-Pop": 51, "Instrumental": 53, "Brazillian": 1122, "Disney": 50000063 }
 
-dbRef.on("value", function(snapshot) {
+dbRef.on("value", function (snapshot) {
     if (snapshot.val()) {
         movieLinks = JSON.parse(snapshot.val().movies);
         musicLinks = JSON.parse(snapshot.val().music);
@@ -43,6 +43,58 @@ dbRef.on("value", function(snapshot) {
         };
     };
 });
+
+//Youtube Player Section
+//This code loads the IFrame Player API code asynchronously.
+function loadYTPlayer() {
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+};
+
+//This function creates an <iframe> (and YouTube player) after the API code downloads.
+var ytPlayer;
+
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('youtube-player', {});
+};
+
+function getYouTube() {
+
+    var term = $(this).attr("data-title");
+    var queryURL = "https://cors-anywhere.herokuapp.com/https://www.googleapis.com/youtube/v3/search?part=snippet&q="+term+"&type=playlist&key=AIzaSyCjoCACPpUx6wDvUQVPfuBxwAWDlMwtkyE"
+
+    $.ajax({
+        url: queryURL,
+        method: "GET",
+        dataType: "JSON"
+    }).then(function (response) {
+        console.log(response);
+        if (response.items.length > 0) {
+            displayYouTube(response.items[0].id.playlistId);
+        } else {
+            $('#modal-title').text("YouTube Soundtrack");
+            $('#modal-message').text("No soundtrack playlist found on YouTube.");
+            $('#modal-box').modal('show');
+        };
+    });
+};
+
+function displayYouTube(playListID) {
+    ytPlayer.loadPlaylist({
+        list: playListID,
+        listType: "playlist",
+        index: 0,
+        startSeconds: 0,
+        suggestedQuality: "default"
+    });
+    $('#modal-youtube').modal('show');
+    event.target.playVideo();
+}
+
+
 
 function displayMovies(response) {
 
@@ -63,15 +115,16 @@ function displayMovies(response) {
     var movieCount = $("#movie-results").children().length;
     if (movieCount > 0) {
         $(".movie-count").text(" - " + movieCount + " movie(s) found");
-        $("#search-wrapper").show();
     } else {
-        $(".movie-count").text(" - 0 movies found");
-        $('#modal-title').text("Movie Search");
-        $('#modal-message').text("No movies found based on your search.");
-        $('#modal-box').modal('show');
+        if ($("#search-by").val() === "Movie") {
+            $(".movie-count").text(" - 0 movies found");
+            $('#modal-title').text("Movie Search");
+            $('#modal-message').text("No movies found based on your search.");
+            $('#modal-box').modal('show');
+        };
     };
 
-    $(".movie").fadeIn("slow", function() {
+    $(".movie").fadeIn("slow", function () {
         //animation complete
     });
 
@@ -106,7 +159,7 @@ function getMovieSoundtrack() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         var soundtracks = response.results;
         var albumIDS = [];
@@ -124,7 +177,7 @@ function getMovieSoundtrack() {
                 url: queryURL,
                 method: "GET",
                 dataType: "JSON"
-            }).then(function(response) {
+            }).then(function (response) {
                 console.log(response);
                 displayMovieSoundtrack(response)
             });
@@ -152,7 +205,7 @@ function displayMovieSoundtrack(response) {
     var soundTrackCount = $("#soundtrack-results").children().length;
     $(".soundtrack-count").text(" - " + soundTrackCount + " soundtrack(s) found");
 
-    $(".movie-soundtrack").fadeIn("slow", function() {
+    $(".movie-soundtrack").fadeIn("slow", function () {
         // animation complete
     });
 
@@ -185,6 +238,7 @@ function displaySoundtrackSongs() {
     for (var i = 0; i < soundtrackSongs.length; i++) {
         if (soundtrackSongs[i].wrapperType === "track" && soundtrackSongs[i].collectionId.toString() === $(this).attr("data-id")) {
             $("#soundtrack-header").text(soundtrackSongs[i].collectionName);
+            $("#youtube-logo").attr("data-title", soundtrackSongs[i].collectionName);
             $("#soundtrack-header").attr("data-id", $(this).attr("data-id"));
             var newTR = $('<tr>');
             newTR.append('<td><img class="play-button" src="assets/images/play.png" data-preview=' + soundtrackSongs[i].previewUrl + '></td>');
@@ -192,6 +246,7 @@ function displaySoundtrackSongs() {
             newTR.append('<td>' + soundtrackSongs[i].trackNumber + '</td>');
             newTR.append('<td>' + soundtrackSongs[i].trackName + '</td>');
             newTR.append('<td><a href=' + soundtrackSongs[i].artistViewUrl + ' target="_blank">' + soundtrackSongs[i].artistName + '</a></td>');
+            newTR.append('<td>' + soundtrackSongs[i].primaryGenreName + '</td>');
             $('#soundtrack-table').append(newTR);
 
             aid = soundtrackSongs[i].artistId;
@@ -222,13 +277,14 @@ function displaySoundtrackSongs() {
 };
 
 function getSongSuggestions(details) {
+    $("#suggested-header").text("Searching...");
     queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/lookup?id=" + details.artistID.toString() + "&media=music&entity=song&country=us";
     console.log(queryURL);
     $.ajax({
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         displaySongSuggestions(response, details);
     });
@@ -250,9 +306,12 @@ function displaySongSuggestions(response, details) {
             };
         };
     };
+    $("#suggested-header").text("Suggested Music (" + $("#suggested-table").children().length + ")");
 };
 
 function getSuggestedMovies(artistResponse, artistGenre) {
+    $(".movie-count").text(" - Searching...");
+
     if ($("#search-by").val() === "Music Genre") {
         queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/search?term=soundtrack&limit=200&media=music&entity=song&country=us&genreId=" + genres[$("#search-genre").val()];
     } else { //Searching by music artist
@@ -264,7 +323,7 @@ function getSuggestedMovies(artistResponse, artistGenre) {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
 
         //Combine response and artistResponse if searching by music artist
@@ -292,7 +351,7 @@ function getSuggestedMovies(artistResponse, artistGenre) {
             url: queryURL,
             method: "GET",
             dataType: "JSON"
-        }).then(function(response) {
+        }).then(function (response) {
             console.log(response);
             var albumID = [];
             var songs = response.results;
@@ -321,7 +380,7 @@ function getSuggestedMovies(artistResponse, artistGenre) {
                 url: queryURL,
                 method: "GET",
                 dataType: "JSON"
-            }).then(function(response) {
+            }).then(function (response) {
                 console.log(response);
                 var albumNames = [];
                 var albums = response.results;
@@ -335,7 +394,6 @@ function getSuggestedMovies(artistResponse, artistGenre) {
                 };
                 console.log(albumNames);
                 if (albumNames.length > 0) {
-                    $("search-wrapper").show();
                     displaySuggestedMovies(albumNames);
                 } else {
                     $(".movie-count").text(" - 0 movies found");
@@ -360,6 +418,7 @@ function displaySuggestedMovies(albumNames) {
     console.log(editedAlbumNames);
 
     callCount = editedAlbumNames.length; //used to display message if no movies were found after the last ajax call has finished
+    console.log(callCount);
 
     for (var i = 0; i < editedAlbumNames.length; i++) {
         var albumName = editedAlbumNames[i];
@@ -369,42 +428,13 @@ function displaySuggestedMovies(albumNames) {
             url: queryURL,
             method: "GET",
             dataType: "JSON"
-        }).then(function(response) {
+        }).then(function (response) {
             console.log(response);
 
             displayMovies(response);
 
-            // for (var i = 0; i < response.results.length; i++) {
-            //     var imgURL = response.results[i].poster_path;
-            //     if (imgURL) {
-            //         imgURL = "https://image.tmdb.org/t/p/original/" + imgURL
-            //         var image = $("<img class='img-fluid' alt='Image Unavailable'>").attr("src", imgURL);
-            //         var movieDiv = $("<div class='movie'>");
-            //         movieDiv.attr("data-title", response.results[i].title);
-            //         movieDiv.append(image);
-            //         movieDiv.hide();
-            //         $("#music-search-movies").append(movieDiv);
-            //     };
-            // };
-
-
-            // var movieCount = $("#music-search-movies").children().length;
-            // $(".movie-count").text(" - " + movieCount + " movie(s) suggested");
-            // $("#music-search-wrapper").show();
-
-            // $(".movie").fadeIn("slow", function() {
-            //     //animation complete
-            // });
-
-            // anime({
-            //     targets: document.getElementsByClassName("movie"),
-            //     scale: [
-            //         { value: .6, easing: 'easeOutSine', duration: 500 },
-            //         { value: 1, easing: 'easeOutQuad', duration: 1000 },
-            //     ],
-            // });
-
             callCount--;
+            console.log(callCount);
             if (callCount === 0) {
                 if ($("#movie-results").children().length === 0) {
                     $(".movie-count").text(" - 0 movies found");
@@ -419,31 +449,31 @@ function displaySuggestedMovies(albumNames) {
 };
 
 function getArtists() {
-    queryURL = "https://itunes.apple.com/search?term=" + term + "&entity=musicArtist";
+    $(".artist-count").text(" - Searching...");
+    queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/search?term=" + term + "&entity=musicArtist";
 
     $.ajax({
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         var artistId = [];
         var artists = response.results;
         for (var i = 0; i < artists.length; i++) {
             if (artistId.indexOf(artists[i].artistId) === -1) {
                 artistId.push(artists[i].artistId);
-            } //if
-        } //for
-        queryURL = "https://itunes.apple.com/lookup?id=" + artistId.toString() + "&entity=album&media=music&limit=1";
+            }
+        }
+        queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/lookup?id=" + artistId.toString() + "&entity=album&media=music&limit=1";
         console.log(queryURL);
         $.ajax({
             url: queryURL,
             method: "GET",
             dataType: "JSON",
-        }).then(function(response) {
+        }).then(function (response) {
             console.log(response);
             if (response.results.length > 0) {
-                $("#search-wrapper").show();
                 displayArtists(response);
             } else {
                 $(".artist-count").text(" - 0 artists found");
@@ -452,8 +482,8 @@ function getArtists() {
                 $('#modal-box').modal('show');
             };
 
-        }); //then
-    }); //then
+        });
+    });
 };
 
 function displayArtists(response) {
@@ -468,10 +498,29 @@ function displayArtists(response) {
                 albumDiv.attr("data-name", response.results[i].artistName);
                 albumDiv.attr("data-genre", response.results[i].primaryGenreName);
                 albumDiv.append(image);
+                albumDiv.hide();
                 $("#artist-results").append(albumDiv);
-            }; //if
-        }; //if
-    }; //for
+            };
+        };
+    };
+
+    var artistCount = $("#artist-results").children().length;
+    $(".artist-count").text(" - " + artistCount + " artist(s) found");
+
+    $(".artist-album").fadeIn("slow", function () {
+        // animation complete
+    });
+
+    anime({
+        targets: '.artist-album',
+        rotate: {
+            value: '+=2turn', // 0 + 2 = '2turn'
+            duration: 500,
+            easing: 'easeInOutSine'
+        },
+        direction: 'reverse'
+    });
+
 };
 
 function resetSearch() {
@@ -494,7 +543,7 @@ function searchTMDB() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         totalPages = response.total_pages;
         var totalResults = response.total_results;
@@ -509,53 +558,7 @@ function searchTMDB() {
     });
 };
 
-//Youtube Player Section
-//This code loads the IFrame Player API code asynchronously.
-function loadYTPlayer() {
-    var tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-};
-//This function creates an <iframe> (and YouTube player) after the API code downloads.
-var ytPlayer;
-
-function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('youtube-player', {
-        height: '390',
-        width: '640',
-        videoId: 'YzEL7Vga5AM',
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
-}
-
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady(event) {
-    $('#modal-youtube').modal('show');
-    event.target.playVideo();
-}
-
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-var done = false;
-
-function onPlayerStateChange(event) {
-    // if (event.data == YT.PlayerState.PLAYING && !done) {
-    //     setTimeout(stopVideo, 6000);
-    //     done = true;
-    // }
-}
-
-function stopVideo() {
-    player.stopVideo();
-}
-
-$("#search-by").change(function() {
+$("#search-by").change(function () {
     if ($("#search-by").val() === "Music Genre") {
         $("#genre-group").show();
         $("#search-term").prop("disabled", true);
@@ -566,7 +569,7 @@ $("#search-by").change(function() {
     };
 });
 
-$("#search-button").on("click", function(event) {
+$("#search-button").on("click", function (event) {
     event.preventDefault();
     term = $("#search-term").val().trim();
     term = term.replace(/\W+/g, '+').toLowerCase();
@@ -574,9 +577,9 @@ $("#search-button").on("click", function(event) {
     if (term === "" && $("#search-by").val() != "Music Genre") { return false };
 
 
-    //Hide the welcome message
+    //Hide the welcome message and show the search results screen
     $("#welcome").hide();
-
+    $("#search-wrapper").show();
     resetSearch();
 
     switch ($("#search-by").val()) {
@@ -602,8 +605,13 @@ $(document).on("click", ".movie", getMovieSoundtrack);
 // Display the songs for the selected soundtrack
 $(document).on("click", ".movie-soundtrack", displaySoundtrackSongs);
 
-$(document).on("click", ".artist-album", function() {
+$(document).on("click", ".artist-album", function () {
+    $(".artist-album").attr("style", "border: 1px solid black;");
+    $(this).attr("style", "border: 4px solid yellow;");
+
     $("#movie-results").empty();
+    $(".movie-count").text(" - Searching...");
+
     var artistID = $(this).attr("data-id");
     var artistName = $(this).attr("data-name").replace(/\W+/g, '+').toLowerCase();
     var artistGenre = $(this).attr("data-genre");
@@ -615,7 +623,7 @@ $(document).on("click", ".artist-album", function() {
         url: queryURL,
         method: "GET",
         dataType: "JSON"
-    }).then(function(responseID) {
+    }).then(function (responseID) {
 
         queryURL = "https://cors-anywhere.herokuapp.com/https://itunes.apple.com/search?term=" + artistName + "&limit=200&media=music&entity=song&country=us&genreId=" + genres.Soundtrack;
         console.log(queryURL);
@@ -624,7 +632,7 @@ $(document).on("click", ".artist-album", function() {
             url: queryURL,
             method: "GET",
             dataType: "JSON"
-        }).then(function(responseName) {
+        }).then(function (responseName) {
             console.log(responseID);
             console.log(responseName);
 
@@ -639,7 +647,7 @@ $(document).on("click", ".artist-album", function() {
     });
 });
 
-$(document).on("click", ".play-button", function() {
+$(document).on("click", ".play-button", function () {
     var previewURL = $(this).attr("data-preview");
     if ($(this).attr("src") === "assets/images/play.png") {
         // Pause any current audio and set images back to play
@@ -658,8 +666,15 @@ $(document).on("click", ".play-button", function() {
     };
 });
 
-songPreview.onended = function() {
+$("#youtube-logo").on("click", getYouTube);
+
+$("#modal-youtube").on('hidden.bs.modal', function () {
+    ytPlayer.stopVideo();
+});
+
+songPreview.onended = function () {
     $(".play-button").attr("src", "assets/images/play.png");
 };
 
-// loadYTPlayer();
+//Initialize YouTube player
+loadYTPlayer();
